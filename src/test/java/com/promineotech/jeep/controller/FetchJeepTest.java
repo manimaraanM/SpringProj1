@@ -1,5 +1,7 @@
 package com.promineotech.jeep.controller;
 
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -10,15 +12,23 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlConfig;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.math.BigDecimal;
+import java.util.LinkedList;
 import java.util.List;
-import com.promineotech.jeep.entity.JeepModel;
+
 import com.promineotech.jeep.entity.*;
 
 @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT )
 @ActiveProfiles("test")
+@Sql(scripts= {"classpath:flyway/migration/V1.0__Jeep_Schema.sql",
+		"classpath:flyway/migration/V1.1__Jeep_Data.sql"},
+	config= @SqlConfig(encoding="utf-8")
+		)
 
 public class FetchJeepTest {
 	@LocalServerPort
@@ -26,17 +36,54 @@ public class FetchJeepTest {
 	@Autowired
 	private TestRestTemplate restTemplate;
 
+	@Test
+	void dummytest() {
+		
+	}
+	
+	@Disabled
+	@Test
 	void testThatJeepsAreReturnedWhenAValidModelAndTrimAreSupplied() {
 		JeepModel model=JeepModel.WRANGLER;
 		String trim="Sport";
-	
+	System.out.println("testing 1");
 
 		String uri=String.format("http://localhost:%s/jeep?model=%s&trim=%s", port,model,trim);
 		
-		ResponseEntity<List<Jeep>> response=restTemplate.exchange(uri, HttpMethod.GET, null, new ParameterizedTypeReference<>() {});
+		System.out.println(uri);
+
+	ResponseEntity<List<Jeep>> response=restTemplate.exchange(uri, HttpMethod.GET, null, 
+							new ParameterizedTypeReference<>() {});
 		
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		
+		//Actual list is equal to expected result
+		//List<Jeep> actual=Jeeplist();
+		List<Jeep> expected=Jeeplist();
+		expected.forEach(e->System.out.println(e));
+		assertThat(response.getBody()).isEqualTo(expected);
+		
+	}
+
+	private List<Jeep> Jeeplist() {
+		// TODO Auto-generated method stub
+		List<Jeep> j=new LinkedList<>();
+		Jeep j1=Jeep.builder().model_id(JeepModel.WRANGLER)
+				.trim_level("Sport")
+				.num_doors(2)
+				.wheel_size(18)
+				.base_price(new BigDecimal("20500"))
+				.build();
+		Jeep j2=Jeep.builder().model_id(JeepModel.WRANGLER)
+				.trim_level("Sport")
+				.num_doors(4)
+				.wheel_size(18)
+				.base_price(new BigDecimal("28500"))
+				.build();
+		j.add(j2);
+		j.add(j1);
+		
+		return j;
 	}
 
 	

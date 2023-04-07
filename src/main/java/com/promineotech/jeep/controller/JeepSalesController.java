@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import com.promineotech.jeep.entity.Jeep;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.info.Info;
+
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.servers.Server;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.Parameter;
 
@@ -22,40 +24,59 @@ import io.swagger.v3.oas.annotations.Parameter;
 
 
 @RequestMapping("/jeep")
-@OpenAPIDefinition(info=@Info(title="Jeep Sales Service"),
-servers=@Server(url="http://localhost:8080",description="local host server"))
-
+@OpenAPIDefinition(info = @Info(title="Jeep Sales Service"), servers = {
+		@Server(url = "http://localhost:8080",description = "local server")})
 public interface JeepSalesController {
-	
+//@formatter:off
 @Operation(
-		summary="Service to check Jeep",
-		description="Service to check Jeep Details",
-		responses= {
-				@ApiResponse(responseCode="200",
-						description="Response Ok",
-						content= @Content(mediaType="application/json"
-						)),
-				@ApiResponse(responseCode="400",
-								description="Service in Different type ",
-								content= @Content(mediaType="application/json")),
-				@ApiResponse(responseCode="500",
-								description="Service unavaiable",
-								content= @Content(mediaType="application/json"))
+		summary = "Service to check Jeep",
+		description = "Service to check Jeep Details",
+		responses = {
+				@ApiResponse(
+						responseCode = "200",
+						description = "List of Jeep is returned",
+						content = @Content(
+						mediaType = "application/json", 
+						schema=@Schema(implementation=Jeep.class))
+						),
+				@ApiResponse(
+						responseCode="400",
+						description = "Request parameters are invalid ",
+						content = @Content(
+						mediaType = "application/json ")
+						),
+				@ApiResponse(
+						responseCode = "404",
+						description = " No data found for input ",
+						content = @Content(
+						mediaType = "application/json ")),
+				@ApiResponse(
+						responseCode = "500",
+						description = "Service unavaiable",
+						content = @Content(
+						mediaType = "application/json "))
 		},
-		parameters={
-				@Parameter(name="model",
-						allowEmptyValue=false,
-						required=false,
-						description="model name i.e Wrangler"),
-				@Parameter(name="trim",
-				allowEmptyValue=false,
-				required=false,
-				description="trim name i.e Sport")
+		parameters = {
+				@Parameter(
+						name = "model",
+						allowEmptyValue = false, 
+						required=false, 
+						description = "Model name like Wrangler"),
+				@Parameter(
+						name = "trim", 
+						allowEmptyValue = false, 
+						required=false, 
+						description="trim level like Sport")
 		}
 
 		)
-	
+//@formatter:on
+
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	List<Jeep> fetchJeep(@RequestParam String model,@RequestParam String trim);
+	List<Jeep> fetchJeep(@RequestParam 
+			(required=false) 
+	String model,
+			@RequestParam (required=false) 
+	String trim);
 }
