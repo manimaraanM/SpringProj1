@@ -1,11 +1,12 @@
-package com.prominotech.jeep.service;
+package com.promineotech.jeep.service;
 
 import java.util.List;
 
 
 import com.promineotech.jeep.entity.Jeep;
 
-public interface JeepService {
+public interface JeepSalesService {
 
 	 List<Jeep> fetchJeepDetails(String model, String trim) ;
+
 }

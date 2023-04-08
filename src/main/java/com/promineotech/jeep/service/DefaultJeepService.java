@@ -1,4 +1,4 @@
-package com.prominotech.jeep.service;
+package com.promineotech.jeep.service;
 
 import java.util.List;
 
@@ -10,12 +10,12 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class DefaultJeepService implements JeepService {
+public class DefaultJeepService implements JeepSalesService {
 
 	@Override
 	public List<Jeep> fetchJeepDetails(String model, String trim) {
 		// TODO Auto-generated method stub
-		log.debug("Fetch Jeep Details from Service Layer");
+		log.debug("Fetch Jeep Details from Service Layer with model{} and trim{}",model,trim);
 		return null;
 	}
 

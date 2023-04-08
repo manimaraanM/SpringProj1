@@ -23,6 +23,9 @@ import java.util.List;
 
 import com.promineotech.jeep.entity.*;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT )
 @ActiveProfiles("test")
 @Sql(scripts= {"classpath:flyway/migration/V1.0__Jeep_Schema.sql",
@@ -36,12 +39,13 @@ public class FetchJeepTest {
 	@Autowired
 	private TestRestTemplate restTemplate;
 
+	@Disabled
 	@Test
 	void dummytest() {
 		
 	}
 	
-	@Disabled
+	
 	@Test
 	void testThatJeepsAreReturnedWhenAValidModelAndTrimAreSupplied() {
 		JeepModel model=JeepModel.WRANGLER;
@@ -59,26 +63,27 @@ public class FetchJeepTest {
 		
 		//Actual list is equal to expected result
 		//List<Jeep> actual=Jeeplist();
-		List<Jeep> expected=Jeeplist();
+		List<Jeep> expected=buildExpected();
+		log.info("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM");
 		expected.forEach(e->System.out.println(e));
 		assertThat(response.getBody()).isEqualTo(expected);
 		
 	}
 
-	private List<Jeep> Jeeplist() {
+	private List<Jeep> buildExpected() {
 		// TODO Auto-generated method stub
 		List<Jeep> j=new LinkedList<>();
 		Jeep j1=Jeep.builder().model_id(JeepModel.WRANGLER)
 				.trim_level("Sport")
 				.num_doors(2)
-				.wheel_size(18)
-				.base_price(new BigDecimal("20500"))
+				.wheel_size(17)
+				.base_price(new BigDecimal("28475.00"))
 				.build();
 		Jeep j2=Jeep.builder().model_id(JeepModel.WRANGLER)
 				.trim_level("Sport")
 				.num_doors(4)
-				.wheel_size(18)
-				.base_price(new BigDecimal("28500"))
+				.wheel_size(17)
+				.base_price(new BigDecimal("31975.00"))
 				.build();
 		j.add(j2);
 		j.add(j1);
