@@ -4,9 +4,10 @@ import java.util.List;
 
 
 import com.promineotech.jeep.entity.Jeep;
+import com.promineotech.jeep.entity.JeepModel;
 
 public interface JeepSalesService {
 
-	 List<Jeep> fetchJeepDetails(String model, String trim) ;
+	 List<Jeep> fetchJeepDetails(JeepModel model, String trim) ;
 
 }
