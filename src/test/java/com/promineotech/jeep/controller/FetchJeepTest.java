@@ -35,6 +35,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
 
+import com.mysql.cj.x.protobuf.MysqlxCrud.Order;
 import com.promineotech.jeep.constants.Defaultconstants;
 import com.promineotech.jeep.entity.*;
 import com.promineotech.jeep.service.JeepSalesService;
@@ -87,6 +88,7 @@ public class FetchJeepTest {
 		ResponseEntity<List<Jeep>> response=restTemplate.exchange(uri, HttpMethod.GET, null, 
 								new ParameterizedTypeReference<>() {});
 			
+		
 			assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 			
 			//Actual list is equal to expected result
@@ -97,6 +99,7 @@ public class FetchJeepTest {
 			
 		}
 
+		
 		@Test
 		void testThatErrorMessageReturnedWhenMissingModelAndTrimAreSupplied() {
 			JeepModel model=JeepModel.WRANGLER;

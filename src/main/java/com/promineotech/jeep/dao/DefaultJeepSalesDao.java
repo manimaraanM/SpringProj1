@@ -26,6 +26,7 @@ private NamedParameterJdbcTemplate jdbcTemplate;
 	public List<Jeep> fetchJeeps(JeepModel model, String trim) {
 		// TODO Auto-generated method stub
 		log.info("Dao implementation layer called for model: {} ,trim : {}",model,trim);
+		
 		String query=""
 				+" Select * from models"
 				+" where model_id= :model_id"
